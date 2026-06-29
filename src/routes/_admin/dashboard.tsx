@@ -93,7 +93,7 @@ function Dashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-3xl font-bold text-foreground">Dashboard</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Dashboard</h1>
         <p className="text-sm text-muted-foreground">Welcome to Bhest Brhain Academy — overview of your school today.</p>
       </div>
 
@@ -105,7 +105,7 @@ function Dashboard() {
               <div className="grid h-9 w-9 place-items-center rounded-md bg-accent/15 text-accent"><k.icon className="h-4 w-4" /></div>
             </CardHeader>
             <CardContent>
-              <p className="font-display text-3xl font-bold text-foreground">{k.value}</p>
+              <p className="font-display text-2xl sm:text-3xl font-bold text-foreground break-words">{k.value}</p>
               <p className="mt-1 text-xs text-muted-foreground">{k.hint}</p>
             </CardContent>
           </Card>

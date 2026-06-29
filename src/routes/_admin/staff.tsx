@@ -128,44 +128,52 @@ function StaffPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+        <CardHeader className="gap-3">
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <span>All Staff ({staff.length})</span>
-            <div className="relative w-72">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Search by name or role…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8" />
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead><TableHead>Role</TableHead><TableHead>Subject</TableHead>
-                <TableHead>Phone</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Actions</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="hidden md:table-cell">Subject</TableHead>
+                <TableHead className="hidden md:table-cell">Phone</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.map((s) => (
                 <TableRow key={s.id}>
-                  <TableCell className="flex items-center gap-2">
-                    <div className="h-8 w-8 overflow-hidden rounded-full bg-muted">
-                      {s.photo_url ? <img src={s.photo_url} className="h-full w-full object-cover" alt="" /> : <div className="grid h-full w-full place-items-center text-xs">{s.full_name.charAt(0)}</div>}
+                  <TableCell className="font-mono text-xs whitespace-nowrap">{s.staff_code ?? "—"}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-muted">
+                        {s.photo_url ? <img src={s.photo_url} className="h-full w-full object-cover" alt="" /> : <div className="grid h-full w-full place-items-center text-xs">{s.full_name.charAt(0)}</div>}
+                      </div>
+                      <span className="font-medium">{s.full_name}</span>
                     </div>
-                    <span className="font-medium">{s.full_name}</span>
                   </TableCell>
                   <TableCell>{s.role}</TableCell>
-                  <TableCell>{s.subject ?? "—"}</TableCell>
-                  <TableCell>{s.phone ?? "—"}</TableCell>
-                  <TableCell><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
-                  <TableCell className="text-right space-x-1">
+                  <TableCell className="hidden md:table-cell">{s.subject ?? "—"}</TableCell>
+                  <TableCell className="hidden md:table-cell">{s.phone ?? "—"}</TableCell>
+                  <TableCell className="hidden sm:table-cell"><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
+                  <TableCell className="text-right whitespace-nowrap space-x-1">
                     <Button size="sm" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => remove(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </TableCell>
                 </TableRow>
               ))}
               {!filtered.length && (
-                <TableRow><TableCell colSpan={6} className="text-center text-sm text-muted-foreground py-8">No staff yet. Click "Add Staff" to get started.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">No staff yet. Click "Add Staff" to get started.</TableCell></TableRow>
               )}
             </TableBody>
           </Table>

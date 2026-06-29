@@ -19,7 +19,7 @@ import { CLASSES, formatCedis } from "@/lib/format";
 export const Route = createFileRoute("/_admin/students")({ component: StudentsPage });
 
 type Student = {
-  id: string; full_name: string; dob: string | null; class: string;
+  id: string; student_code: string | null; full_name: string; dob: string | null; class: string;
   parent_name: string | null; parent_phone: string | null; parent_email: string | null;
   fee_balance: number; enrollment_date: string; medical_conditions: string | null;
   status: string; photo_url: string | null; parent_user_id: string | null;
@@ -121,13 +121,13 @@ function StudentsPage() {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-wrap items-center justify-between gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-bold">Students</h1>
-          <p className="text-sm text-muted-foreground">{filtered.length} of {students.length} student(s)</p>
+      <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
+        <div className="min-w-0">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold">Students</h1>
+          <p className="text-sm text-muted-foreground">{filtered.length} of {students.length} student(s){editing?.student_code ? ` · editing ${editing.student_code}` : ""}</p>
         </div>
         <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
-          <DialogTrigger asChild><Button className="bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
+          <DialogTrigger asChild><Button className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
           <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
             <DialogHeader><DialogTitle>{editing ? "Edit Student" : "Admission Form"}</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-4">
@@ -189,34 +189,36 @@ function StudentsPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>ID</TableHead>
                 <TableHead>Student</TableHead>
                 <TableHead>Class</TableHead>
-                <TableHead>Parent Phone</TableHead>
-                <TableHead>Fee Balance</TableHead>
-                <TableHead>Status</TableHead>
+                <TableHead className="hidden md:table-cell">Parent Phone</TableHead>
+                <TableHead className="hidden sm:table-cell">Fee Balance</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
                 <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.map((s) => (
                 <TableRow key={s.id}>
+                  <TableCell className="font-mono text-xs">{s.student_code ?? "—"}</TableCell>
                   <TableCell>
                     <div className="flex items-center gap-3">
-                      <Avatar className="h-9 w-9"><AvatarImage src={s.photo_url ?? undefined} /><AvatarFallback>{s.full_name.charAt(0)}</AvatarFallback></Avatar>
+                      <Avatar className="h-9 w-9 shrink-0"><AvatarImage src={s.photo_url ?? undefined} /><AvatarFallback>{s.full_name.charAt(0)}</AvatarFallback></Avatar>
                       <span className="font-medium">{s.full_name}</span>
                     </div>
                   </TableCell>
                   <TableCell>{s.class}</TableCell>
-                  <TableCell>{s.parent_phone ?? "—"}</TableCell>
-                  <TableCell className="font-mono">{formatCedis(s.fee_balance)}</TableCell>
-                  <TableCell><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
-                  <TableCell className="text-right">
+                  <TableCell className="hidden md:table-cell">{s.parent_phone ?? "—"}</TableCell>
+                  <TableCell className="hidden sm:table-cell font-mono">{formatCedis(s.fee_balance)}</TableCell>
+                  <TableCell className="hidden sm:table-cell"><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
+                  <TableCell className="text-right whitespace-nowrap">
                     <Button size="sm" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </TableCell>
                 </TableRow>
               ))}
-              {!filtered.length && <TableRow><TableCell colSpan={6} className="py-8 text-center text-sm text-muted-foreground">No students found.</TableCell></TableRow>}
+              {!filtered.length && <TableRow><TableCell colSpan={7} className="py-8 text-center text-sm text-muted-foreground">No students found.</TableCell></TableRow>}
             </TableBody>
           </Table>
         </CardContent>

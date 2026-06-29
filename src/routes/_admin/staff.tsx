@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_admin/staff")({ component: StaffPage });
 const ROLES = ["Head Teacher", "Teacher", "Assistant Teacher", "Bursar", "Secretary", "Security", "Cleaner", "Driver", "Nurse"];
 
 type Staff = {
-  id: string; full_name: string; role: string; email: string | null; phone: string | null;
+  id: string; staff_code: string | null; full_name: string; role: string; email: string | null; phone: string | null;
   subject: string | null; dob: string | null; photo_url: string | null; hire_date: string; status: string;
 };
 
@@ -82,20 +82,20 @@ function StaffPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-foreground flex items-center gap-2"><UserCog className="h-7 w-7 text-accent" />Staff Management</h1>
+      <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="min-w-0">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><UserCog className="h-6 w-6 sm:h-7 sm:w-7 text-accent shrink-0" />Staff Management</h1>
           <p className="text-sm text-muted-foreground">Manage teachers and non-teaching staff.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openNew} className="bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Staff</Button>
+            <Button onClick={openNew} className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Staff</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-lg">
-            <DialogHeader><DialogTitle>{editing ? "Edit Staff" : "New Staff Member"}</DialogTitle></DialogHeader>
+          <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
+            <DialogHeader><DialogTitle>{editing ? `Edit Staff${editing.staff_code ? ` · ${editing.staff_code}` : ""}` : "New Staff Member"}</DialogTitle></DialogHeader>
             <div className="grid gap-3">
               <div className="grid gap-1.5"><Label>Full Name *</Label><Input value={form.full_name ?? ""} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="grid gap-1.5">
                   <Label>Role *</Label>
                   <Select value={form.role} onValueChange={(v) => setForm({ ...form, role: v })}>
@@ -105,11 +105,11 @@ function StaffPage() {
                 </div>
                 <div className="grid gap-1.5"><Label>Subject</Label><Input value={form.subject ?? ""} onChange={(e) => setForm({ ...form, subject: e.target.value })} placeholder="e.g. Mathematics" /></div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="grid gap-1.5"><Label>Email</Label><Input type="email" value={form.email ?? ""} onChange={(e) => setForm({ ...form, email: e.target.value })} /></div>
                 <div className="grid gap-1.5"><Label>Phone</Label><Input value={form.phone ?? ""} onChange={(e) => setForm({ ...form, phone: e.target.value })} /></div>
               </div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="grid gap-1.5"><Label>Date of Birth</Label><Input type="date" value={form.dob ?? ""} onChange={(e) => setForm({ ...form, dob: e.target.value })} /></div>
                 <div className="grid gap-1.5"><Label>Hire Date</Label><Input type="date" value={form.hire_date ?? ""} onChange={(e) => setForm({ ...form, hire_date: e.target.value })} /></div>
               </div>
@@ -128,44 +128,52 @@ function StaffPage() {
       </div>
 
       <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
+        <CardHeader className="gap-3">
+          <CardTitle className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
             <span>All Staff ({staff.length})</span>
-            <div className="relative w-72">
+            <div className="relative w-full sm:w-72">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input placeholder="Search by name or role…" value={search} onChange={(e) => setSearch(e.target.value)} className="pl-8" />
             </div>
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="overflow-x-auto">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead><TableHead>Role</TableHead><TableHead>Subject</TableHead>
-                <TableHead>Phone</TableHead><TableHead>Status</TableHead><TableHead className="text-right">Actions</TableHead>
+                <TableHead>ID</TableHead>
+                <TableHead>Name</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead className="hidden md:table-cell">Subject</TableHead>
+                <TableHead className="hidden md:table-cell">Phone</TableHead>
+                <TableHead className="hidden sm:table-cell">Status</TableHead>
+                <TableHead className="text-right">Actions</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.map((s) => (
                 <TableRow key={s.id}>
-                  <TableCell className="flex items-center gap-2">
-                    <div className="h-8 w-8 overflow-hidden rounded-full bg-muted">
-                      {s.photo_url ? <img src={s.photo_url} className="h-full w-full object-cover" alt="" /> : <div className="grid h-full w-full place-items-center text-xs">{s.full_name.charAt(0)}</div>}
+                  <TableCell className="font-mono text-xs whitespace-nowrap">{s.staff_code ?? "—"}</TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-2">
+                      <div className="h-8 w-8 shrink-0 overflow-hidden rounded-full bg-muted">
+                        {s.photo_url ? <img src={s.photo_url} className="h-full w-full object-cover" alt="" /> : <div className="grid h-full w-full place-items-center text-xs">{s.full_name.charAt(0)}</div>}
+                      </div>
+                      <span className="font-medium">{s.full_name}</span>
                     </div>
-                    <span className="font-medium">{s.full_name}</span>
                   </TableCell>
                   <TableCell>{s.role}</TableCell>
-                  <TableCell>{s.subject ?? "—"}</TableCell>
-                  <TableCell>{s.phone ?? "—"}</TableCell>
-                  <TableCell><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
-                  <TableCell className="text-right space-x-1">
+                  <TableCell className="hidden md:table-cell">{s.subject ?? "—"}</TableCell>
+                  <TableCell className="hidden md:table-cell">{s.phone ?? "—"}</TableCell>
+                  <TableCell className="hidden sm:table-cell"><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
+                  <TableCell className="text-right whitespace-nowrap space-x-1">
                     <Button size="sm" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => remove(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </TableCell>
                 </TableRow>
               ))}
               {!filtered.length && (
-                <TableRow><TableCell colSpan={6} className="text-center text-sm text-muted-foreground py-8">No staff yet. Click "Add Staff" to get started.</TableCell></TableRow>
+                <TableRow><TableCell colSpan={7} className="text-center text-sm text-muted-foreground py-8">No staff yet. Click "Add Staff" to get started.</TableCell></TableRow>
               )}
             </TableBody>
           </Table>

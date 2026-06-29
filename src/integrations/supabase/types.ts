@@ -202,6 +202,7 @@ export type Database = {
           phone: string | null
           photo_url: string | null
           role: string
+          staff_code: string | null
           status: string
           subject: string | null
           updated_at: string
@@ -216,6 +217,7 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           role?: string
+          staff_code?: string | null
           status?: string
           subject?: string | null
           updated_at?: string
@@ -230,6 +232,7 @@ export type Database = {
           phone?: string | null
           photo_url?: string | null
           role?: string
+          staff_code?: string | null
           status?: string
           subject?: string | null
           updated_at?: string
@@ -252,6 +255,7 @@ export type Database = {
           parent_user_id: string | null
           photo_url: string | null
           status: string
+          student_code: string | null
           updated_at: string
         }
         Insert: {
@@ -269,6 +273,7 @@ export type Database = {
           parent_user_id?: string | null
           photo_url?: string | null
           status?: string
+          student_code?: string | null
           updated_at?: string
         }
         Update: {
@@ -286,6 +291,7 @@ export type Database = {
           parent_user_id?: string | null
           photo_url?: string | null
           status?: string
+          student_code?: string | null
           updated_at?: string
         }
         Relationships: []

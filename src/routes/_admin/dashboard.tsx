@@ -37,9 +37,10 @@ function Dashboard() {
       const newToday = students.filter((s) => s.created_at.startsWith(today)).length;
 
       // Top performers by GPA
-      const byStudent = new Map<string, { name: string; photo: string | null; klass: string; scores: number[] }>();
+      type Agg = { name: string; photo: string | null; klass: string; scores: number[] };
+      const byStudent = new Map<string, Agg>();
       for (const g of grades) {
-        const cur = byStudent.get(g.student_id) ?? { name: g.students?.full_name ?? "Unknown", photo: g.students?.photo_url ?? null, klass: g.students?.class ?? "", scores: [] };
+        const cur: Agg = byStudent.get(g.student_id) ?? { name: g.students?.full_name ?? "Unknown", photo: g.students?.photo_url ?? null, klass: g.students?.class ?? "", scores: [] };
         cur.scores.push(Number(g.score));
         byStudent.set(g.student_id, cur);
       }

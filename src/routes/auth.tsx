@@ -8,6 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
 import { GraduationCap } from "lucide-react";
+import bgClassroom from "@/assets/bg-classroom.jpg";
 
 export const Route = createFileRoute("/auth")({ ssr: false, component: AuthPage });
 
@@ -43,16 +44,18 @@ function AuthPage() {
 
   return (
     <div className="grid min-h-screen md:grid-cols-2">
-      <div className="hidden bg-gradient-to-br from-primary to-[oklch(0.30_0.07_265)] p-12 text-primary-foreground md:flex md:flex-col md:justify-between">
-        <div className="flex items-center gap-3">
+      <div className="relative hidden overflow-hidden p-12 text-primary-foreground md:flex md:flex-col md:justify-between">
+        <div className="absolute inset-0 bg-cover bg-center" style={{ backgroundImage: `url(${bgClassroom})` }} />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/95 via-primary/80 to-[oklch(0.30_0.07_265)]/90" />
+        <div className="relative flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-md bg-accent text-accent-foreground"><GraduationCap /></div>
           <span className="font-display text-xl font-bold">Bhest Brhain Academy</span>
         </div>
-        <div>
-          <h2 className="font-display text-4xl font-bold leading-tight">Administer your school with clarity.</h2>
-          <p className="mt-4 text-primary-foreground/80">Students, fees, attendance, grades and reports — designed for Ghanaian schools.</p>
+        <div className="relative">
+          <h2 className="font-display text-4xl font-bold leading-tight drop-shadow">Shaping brighter futures, every day.</h2>
+          <p className="mt-4 text-primary-foreground/90">Students, fees, attendance, grades and reports — designed for Ghanaian schools.</p>
         </div>
-        <p className="text-xs text-primary-foreground/60">Are you a parent? <a href="/parent-auth" className="underline">Login here</a></p>
+        <p className="relative text-xs text-primary-foreground/70">Are you a parent? <a href="/parent-auth" className="underline">Login here</a></p>
       </div>
 
       <div className="flex items-center justify-center bg-background p-6">

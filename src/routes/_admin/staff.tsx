@@ -18,7 +18,7 @@ export const Route = createFileRoute("/_admin/staff")({ component: StaffPage });
 const ROLES = ["Head Teacher", "Teacher", "Assistant Teacher", "Bursar", "Secretary", "Security", "Cleaner", "Driver", "Nurse"];
 
 type Staff = {
-  id: string; full_name: string; role: string; email: string | null; phone: string | null;
+  id: string; staff_code: string | null; full_name: string; role: string; email: string | null; phone: string | null;
   subject: string | null; dob: string | null; photo_url: string | null; hire_date: string; status: string;
 };
 
@@ -82,20 +82,20 @@ function StaffPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-end justify-between flex-wrap gap-3">
-        <div>
-          <h1 className="font-display text-3xl font-bold text-foreground flex items-center gap-2"><UserCog className="h-7 w-7 text-accent" />Staff Management</h1>
+      <div className="grid grid-cols-1 items-start gap-3 sm:grid-cols-[1fr_auto] sm:items-end">
+        <div className="min-w-0">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground flex items-center gap-2"><UserCog className="h-6 w-6 sm:h-7 sm:w-7 text-accent shrink-0" />Staff Management</h1>
           <p className="text-sm text-muted-foreground">Manage teachers and non-teaching staff.</p>
         </div>
         <Dialog open={open} onOpenChange={setOpen}>
           <DialogTrigger asChild>
-            <Button onClick={openNew} className="bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Staff</Button>
+            <Button onClick={openNew} className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Staff</Button>
           </DialogTrigger>
-          <DialogContent className="max-w-lg">
-            <DialogHeader><DialogTitle>{editing ? "Edit Staff" : "New Staff Member"}</DialogTitle></DialogHeader>
+          <DialogContent className="max-h-[90vh] max-w-lg overflow-y-auto">
+            <DialogHeader><DialogTitle>{editing ? `Edit Staff${editing.staff_code ? ` · ${editing.staff_code}` : ""}` : "New Staff Member"}</DialogTitle></DialogHeader>
             <div className="grid gap-3">
               <div className="grid gap-1.5"><Label>Full Name *</Label><Input value={form.full_name ?? ""} onChange={(e) => setForm({ ...form, full_name: e.target.value })} /></div>
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="grid gap-1.5">
                   <Label>Role *</Label>
                   <Select value={form.role} onValueChange={(v) => setForm({ ...form, role: v })}>

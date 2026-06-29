@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Users, Wallet, ClipboardCheck, GraduationCap,
-  FileText, Megaphone, LogOut, Sun, Moon, School, UserCog,
+  FileText, Megaphone, LogOut, Sun, Moon, School, UserCog, ShieldCheck,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -20,6 +20,7 @@ const items = [
   { title: "Grades", url: "/grades", icon: GraduationCap },
   { title: "Report Cards", url: "/report-cards", icon: FileText },
   { title: "Announcements", url: "/announcements", icon: Megaphone },
+  { title: "Roles", url: "/roles", icon: ShieldCheck },
 ];
 
 export function AppSidebar() {

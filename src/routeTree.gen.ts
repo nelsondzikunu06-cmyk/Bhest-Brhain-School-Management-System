@@ -15,6 +15,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminStudentsRouteImport } from './routes/_admin/students'
+import { Route as AdminStaffRouteImport } from './routes/_admin/staff'
 import { Route as AdminReportCardsRouteImport } from './routes/_admin/report-cards'
 import { Route as AdminGradesRouteImport } from './routes/_admin/grades'
 import { Route as AdminFeesRouteImport } from './routes/_admin/fees'
@@ -49,6 +50,11 @@ const IndexRoute = IndexRouteImport.update({
 const AdminStudentsRoute = AdminStudentsRouteImport.update({
   id: '/students',
   path: '/students',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminStaffRoute = AdminStaffRouteImport.update({
+  id: '/staff',
+  path: '/staff',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminReportCardsRoute = AdminReportCardsRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/fees': typeof AdminFeesRoute
   '/grades': typeof AdminGradesRoute
   '/report-cards': typeof AdminReportCardsRoute
+  '/staff': typeof AdminStaffRoute
   '/students': typeof AdminStudentsRoute
 }
 export interface FileRoutesByTo {
@@ -106,6 +113,7 @@ export interface FileRoutesByTo {
   '/fees': typeof AdminFeesRoute
   '/grades': typeof AdminGradesRoute
   '/report-cards': typeof AdminReportCardsRoute
+  '/staff': typeof AdminStaffRoute
   '/students': typeof AdminStudentsRoute
 }
 export interface FileRoutesById {
@@ -121,6 +129,7 @@ export interface FileRoutesById {
   '/_admin/fees': typeof AdminFeesRoute
   '/_admin/grades': typeof AdminGradesRoute
   '/_admin/report-cards': typeof AdminReportCardsRoute
+  '/_admin/staff': typeof AdminStaffRoute
   '/_admin/students': typeof AdminStudentsRoute
 }
 export interface FileRouteTypes {
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/grades'
     | '/report-cards'
+    | '/staff'
     | '/students'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -149,6 +159,7 @@ export interface FileRouteTypes {
     | '/fees'
     | '/grades'
     | '/report-cards'
+    | '/staff'
     | '/students'
   id:
     | '__root__'
@@ -163,6 +174,7 @@ export interface FileRouteTypes {
     | '/_admin/fees'
     | '/_admin/grades'
     | '/_admin/report-cards'
+    | '/_admin/staff'
     | '/_admin/students'
   fileRoutesById: FileRoutesById
 }
@@ -218,6 +230,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminStudentsRouteImport
       parentRoute: typeof AdminRouteRoute
     }
+    '/_admin/staff': {
+      id: '/_admin/staff'
+      path: '/staff'
+      fullPath: '/staff'
+      preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
     '/_admin/report-cards': {
       id: '/_admin/report-cards'
       path: '/report-cards'
@@ -270,6 +289,7 @@ interface AdminRouteRouteChildren {
   AdminFeesRoute: typeof AdminFeesRoute
   AdminGradesRoute: typeof AdminGradesRoute
   AdminReportCardsRoute: typeof AdminReportCardsRoute
+  AdminStaffRoute: typeof AdminStaffRoute
   AdminStudentsRoute: typeof AdminStudentsRoute
 }
 
@@ -280,6 +300,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminFeesRoute: AdminFeesRoute,
   AdminGradesRoute: AdminGradesRoute,
   AdminReportCardsRoute: AdminReportCardsRoute,
+  AdminStaffRoute: AdminStaffRoute,
   AdminStudentsRoute: AdminStudentsRoute,
 }
 

@@ -191,6 +191,51 @@ export type Database = {
         }
         Relationships: []
       }
+      staff: {
+        Row: {
+          created_at: string
+          dob: string | null
+          email: string | null
+          full_name: string
+          hire_date: string
+          id: string
+          phone: string | null
+          photo_url: string | null
+          role: string
+          status: string
+          subject: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          dob?: string | null
+          email?: string | null
+          full_name: string
+          hire_date?: string
+          id?: string
+          phone?: string | null
+          photo_url?: string | null
+          role?: string
+          status?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          dob?: string | null
+          email?: string | null
+          full_name?: string
+          hire_date?: string
+          id?: string
+          phone?: string | null
+          photo_url?: string | null
+          role?: string
+          status?: string
+          subject?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       students: {
         Row: {
           class: string

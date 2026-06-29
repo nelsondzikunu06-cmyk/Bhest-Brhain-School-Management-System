@@ -74,7 +74,7 @@ function FeesPage() {
     doc.rect(0, 0, 210, 30, "F");
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(18);
-    doc.text("Akasanoma School — Payment Receipt", 14, 18);
+    doc.text("Bhest Brhain Academy — Payment Receipt", 14, 18);
     doc.setTextColor(0, 0, 0);
     doc.setFontSize(11);
     let y = 45;

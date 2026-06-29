@@ -1,7 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Users, Wallet, ClipboardCheck, GraduationCap,
-  FileText, Megaphone, LogOut, Sun, Moon, School,
+  FileText, Megaphone, LogOut, Sun, Moon, School, UserCog,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -14,6 +14,7 @@ import { useTheme } from "@/hooks/use-theme";
 const items = [
   { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
   { title: "Students", url: "/students", icon: Users },
+  { title: "Staff", url: "/staff", icon: UserCog },
   { title: "Fees", url: "/fees", icon: Wallet },
   { title: "Attendance", url: "/attendance", icon: ClipboardCheck },
   { title: "Grades", url: "/grades", icon: GraduationCap },
@@ -38,7 +39,7 @@ export function AppSidebar() {
             <School className="h-5 w-5" />
           </div>
           <div className="min-w-0 group-data-[collapsible=icon]:hidden">
-            <p className="truncate font-display text-base font-bold text-sidebar-foreground">Akasanoma SMS</p>
+            <p className="truncate font-display text-base font-bold text-sidebar-foreground">Bhest Brhain Academy</p>
             <p className="truncate text-[10px] text-sidebar-foreground/60">Admin Console</p>
           </div>
         </div>

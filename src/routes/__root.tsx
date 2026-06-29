@@ -41,7 +41,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Akasanoma School Management" },
+      { title: "Bhest Brhain Academy" },
       { name: "description", content: "Complete school management system - students, fees, attendance, grades." },
     ],
     links: [

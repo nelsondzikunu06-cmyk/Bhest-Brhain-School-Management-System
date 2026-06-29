@@ -9,38 +9,201 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as ParentPortalRouteImport } from './routes/parent-portal'
+import { Route as ParentAuthRouteImport } from './routes/parent-auth'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminStudentsRouteImport } from './routes/_admin/students'
+import { Route as AdminReportCardsRouteImport } from './routes/_admin/report-cards'
+import { Route as AdminGradesRouteImport } from './routes/_admin/grades'
+import { Route as AdminFeesRouteImport } from './routes/_admin/fees'
+import { Route as AdminDashboardRouteImport } from './routes/_admin/dashboard'
+import { Route as AdminAttendanceRouteImport } from './routes/_admin/attendance'
+import { Route as AdminAnnouncementsRouteImport } from './routes/_admin/announcements'
 
+const ParentPortalRoute = ParentPortalRouteImport.update({
+  id: '/parent-portal',
+  path: '/parent-portal',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ParentAuthRoute = ParentAuthRouteImport.update({
+  id: '/parent-auth',
+  path: '/parent-auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRouteRoute = AdminRouteRouteImport.update({
+  id: '/_admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminStudentsRoute = AdminStudentsRouteImport.update({
+  id: '/students',
+  path: '/students',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminReportCardsRoute = AdminReportCardsRouteImport.update({
+  id: '/report-cards',
+  path: '/report-cards',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminGradesRoute = AdminGradesRouteImport.update({
+  id: '/grades',
+  path: '/grades',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminFeesRoute = AdminFeesRouteImport.update({
+  id: '/fees',
+  path: '/fees',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminDashboardRoute = AdminDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAttendanceRoute = AdminAttendanceRouteImport.update({
+  id: '/attendance',
+  path: '/attendance',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminAnnouncementsRoute = AdminAnnouncementsRouteImport.update({
+  id: '/announcements',
+  path: '/announcements',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/parent-auth': typeof ParentAuthRoute
+  '/parent-portal': typeof ParentPortalRoute
+  '/announcements': typeof AdminAnnouncementsRoute
+  '/attendance': typeof AdminAttendanceRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/fees': typeof AdminFeesRoute
+  '/grades': typeof AdminGradesRoute
+  '/report-cards': typeof AdminReportCardsRoute
+  '/students': typeof AdminStudentsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/parent-auth': typeof ParentAuthRoute
+  '/parent-portal': typeof ParentPortalRoute
+  '/announcements': typeof AdminAnnouncementsRoute
+  '/attendance': typeof AdminAttendanceRoute
+  '/dashboard': typeof AdminDashboardRoute
+  '/fees': typeof AdminFeesRoute
+  '/grades': typeof AdminGradesRoute
+  '/report-cards': typeof AdminReportCardsRoute
+  '/students': typeof AdminStudentsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_admin': typeof AdminRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/parent-auth': typeof ParentAuthRoute
+  '/parent-portal': typeof ParentPortalRoute
+  '/_admin/announcements': typeof AdminAnnouncementsRoute
+  '/_admin/attendance': typeof AdminAttendanceRoute
+  '/_admin/dashboard': typeof AdminDashboardRoute
+  '/_admin/fees': typeof AdminFeesRoute
+  '/_admin/grades': typeof AdminGradesRoute
+  '/_admin/report-cards': typeof AdminReportCardsRoute
+  '/_admin/students': typeof AdminStudentsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/parent-auth'
+    | '/parent-portal'
+    | '/announcements'
+    | '/attendance'
+    | '/dashboard'
+    | '/fees'
+    | '/grades'
+    | '/report-cards'
+    | '/students'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/parent-auth'
+    | '/parent-portal'
+    | '/announcements'
+    | '/attendance'
+    | '/dashboard'
+    | '/fees'
+    | '/grades'
+    | '/report-cards'
+    | '/students'
+  id:
+    | '__root__'
+    | '/'
+    | '/_admin'
+    | '/auth'
+    | '/parent-auth'
+    | '/parent-portal'
+    | '/_admin/announcements'
+    | '/_admin/attendance'
+    | '/_admin/dashboard'
+    | '/_admin/fees'
+    | '/_admin/grades'
+    | '/_admin/report-cards'
+    | '/_admin/students'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRouteRoute: typeof AdminRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ParentAuthRoute: typeof ParentAuthRoute
+  ParentPortalRoute: typeof ParentPortalRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/parent-portal': {
+      id: '/parent-portal'
+      path: '/parent-portal'
+      fullPath: '/parent-portal'
+      preLoaderRoute: typeof ParentPortalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/parent-auth': {
+      id: '/parent-auth'
+      path: '/parent-auth'
+      fullPath: '/parent-auth'
+      preLoaderRoute: typeof ParentAuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_admin': {
+      id: '/_admin'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AdminRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -48,12 +211,99 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_admin/students': {
+      id: '/_admin/students'
+      path: '/students'
+      fullPath: '/students'
+      preLoaderRoute: typeof AdminStudentsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/report-cards': {
+      id: '/_admin/report-cards'
+      path: '/report-cards'
+      fullPath: '/report-cards'
+      preLoaderRoute: typeof AdminReportCardsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/grades': {
+      id: '/_admin/grades'
+      path: '/grades'
+      fullPath: '/grades'
+      preLoaderRoute: typeof AdminGradesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/fees': {
+      id: '/_admin/fees'
+      path: '/fees'
+      fullPath: '/fees'
+      preLoaderRoute: typeof AdminFeesRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/dashboard': {
+      id: '/_admin/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AdminDashboardRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/attendance': {
+      id: '/_admin/attendance'
+      path: '/attendance'
+      fullPath: '/attendance'
+      preLoaderRoute: typeof AdminAttendanceRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/announcements': {
+      id: '/_admin/announcements'
+      path: '/announcements'
+      fullPath: '/announcements'
+      preLoaderRoute: typeof AdminAnnouncementsRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
   }
 }
 
+interface AdminRouteRouteChildren {
+  AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
+  AdminAttendanceRoute: typeof AdminAttendanceRoute
+  AdminDashboardRoute: typeof AdminDashboardRoute
+  AdminFeesRoute: typeof AdminFeesRoute
+  AdminGradesRoute: typeof AdminGradesRoute
+  AdminReportCardsRoute: typeof AdminReportCardsRoute
+  AdminStudentsRoute: typeof AdminStudentsRoute
+}
+
+const AdminRouteRouteChildren: AdminRouteRouteChildren = {
+  AdminAnnouncementsRoute: AdminAnnouncementsRoute,
+  AdminAttendanceRoute: AdminAttendanceRoute,
+  AdminDashboardRoute: AdminDashboardRoute,
+  AdminFeesRoute: AdminFeesRoute,
+  AdminGradesRoute: AdminGradesRoute,
+  AdminReportCardsRoute: AdminReportCardsRoute,
+  AdminStudentsRoute: AdminStudentsRoute,
+}
+
+const AdminRouteRouteWithChildren = AdminRouteRoute._addFileChildren(
+  AdminRouteRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRouteRoute: AdminRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ParentAuthRoute: ParentAuthRoute,
+  ParentPortalRoute: ParentPortalRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

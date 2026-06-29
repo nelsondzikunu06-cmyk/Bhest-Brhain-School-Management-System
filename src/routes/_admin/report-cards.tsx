@@ -54,7 +54,7 @@ function ReportCards() {
       doc.rect(0, 0, 210, 35, "F");
       doc.setTextColor(255, 255, 255);
       doc.setFontSize(20);
-      doc.text("Akasanoma School", 14, 16);
+      doc.text("Bhest Brhain Academy", 14, 16);
       doc.setFontSize(11);
       doc.text(`Report Card — ${term} ${year}`, 14, 26);
 

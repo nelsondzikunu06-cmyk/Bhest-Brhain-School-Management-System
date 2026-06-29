@@ -46,7 +46,7 @@ function AuthPage() {
       <div className="hidden bg-gradient-to-br from-primary to-[oklch(0.30_0.07_265)] p-12 text-primary-foreground md:flex md:flex-col md:justify-between">
         <div className="flex items-center gap-3">
           <div className="grid h-10 w-10 place-items-center rounded-md bg-accent text-accent-foreground"><GraduationCap /></div>
-          <span className="font-display text-xl font-bold">Akasanoma SMS</span>
+          <span className="font-display text-xl font-bold">Bhest Brhain Academy</span>
         </div>
         <div>
           <h2 className="font-display text-4xl font-bold leading-tight">Administer your school with clarity.</h2>

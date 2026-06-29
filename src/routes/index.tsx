@@ -27,7 +27,7 @@ function Landing() {
             <div className="grid h-10 w-10 place-items-center rounded-md bg-accent text-accent-foreground">
               <GraduationCap className="h-6 w-6" />
             </div>
-            <span className="font-display text-xl font-bold">Akasanoma SMS</span>
+            <span className="font-display text-xl font-bold">Bhest Brhain Academy</span>
           </div>
           <nav className="flex items-center gap-3 text-sm">
             <a href="/auth" className="rounded-md px-4 py-2 hover:bg-white/10">Admin Login</a>
@@ -56,7 +56,7 @@ function Landing() {
         </main>
 
         <footer className="text-center text-xs text-primary-foreground/60">
-          © {new Date().getFullYear()} Akasanoma School Management System
+          © {new Date().getFullYear()} Bhest Brhain Academy
         </footer>
       </div>
     </div>

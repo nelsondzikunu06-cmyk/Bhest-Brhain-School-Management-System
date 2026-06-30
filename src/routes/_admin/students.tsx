@@ -251,6 +251,15 @@ function StudentsPage() {
                   <TableCell className="hidden sm:table-cell font-mono">{formatCedis(s.fee_balance)}</TableCell>
                   <TableCell className="hidden sm:table-cell"><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
                   <TableCell className="text-right whitespace-nowrap">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      title={s.parent_user_id ? "Parent already linked" : "Link parent account by email"}
+                      disabled={!!s.parent_user_id || linkingId === s.id || !s.parent_email}
+                      onClick={() => handleLinkOne(s)}
+                    >
+                      <Link2 className={`h-4 w-4 ${s.parent_user_id ? "text-emerald-600" : ""}`} />
+                    </Button>
                     <Button size="sm" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </TableCell>

@@ -12,9 +12,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Plus, Pencil, Trash2, Upload } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, Upload, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { CLASSES, formatCedis } from "@/lib/format";
+import { useServerFn } from "@tanstack/react-start";
+import { linkParentToStudent, linkAllParents } from "@/lib/link-parents.functions";
 
 export const Route = createFileRoute("/_admin/students")({ component: StudentsPage });
 

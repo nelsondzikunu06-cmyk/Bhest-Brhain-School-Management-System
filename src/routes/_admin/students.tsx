@@ -12,9 +12,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Search, Plus, Pencil, Trash2, Upload } from "lucide-react";
+import { Search, Plus, Pencil, Trash2, Upload, Link2 } from "lucide-react";
 import { toast } from "sonner";
 import { CLASSES, formatCedis } from "@/lib/format";
+import { useServerFn } from "@tanstack/react-start";
+import { linkParentToStudent, linkAllParents } from "@/lib/link-parents.functions";
 
 export const Route = createFileRoute("/_admin/students")({ component: StudentsPage });
 
@@ -39,6 +41,37 @@ function StudentsPage() {
   const [form, setForm] = useState({ ...empty });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [linkingId, setLinkingId] = useState<string | null>(null);
+  const [bulkLinking, setBulkLinking] = useState(false);
+  const linkOne = useServerFn(linkParentToStudent);
+  const linkAll = useServerFn(linkAllParents);
+
+  async function handleLinkOne(s: Student) {
+    if (!s.parent_email) return toast.error("Set a parent email on this student first");
+    setLinkingId(s.id);
+    try {
+      await linkOne({ data: { studentId: s.id } });
+      toast.success(`Linked ${s.full_name} to ${s.parent_email}`);
+      qc.invalidateQueries({ queryKey: ["students"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not link parent");
+    } finally {
+      setLinkingId(null);
+    }
+  }
+
+  async function handleLinkAll() {
+    setBulkLinking(true);
+    try {
+      const res = await linkAll();
+      toast.success(`Linked ${res.linked} student(s)${res.missing.length ? ` · ${res.missing.length} parent account(s) missing` : ""}`);
+      qc.invalidateQueries({ queryKey: ["students"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Bulk link failed");
+    } finally {
+      setBulkLinking(false);
+    }
+  }
 
   const { data: students = [] } = useQuery({
     queryKey: ["students"],
@@ -127,7 +160,12 @@ function StudentsPage() {
           <p className="text-sm text-muted-foreground">{filtered.length} of {students.length} student(s){editing?.student_code ? ` · editing ${editing.student_code}` : ""}</p>
         </div>
         <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
-          <DialogTrigger asChild><Button className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={handleLinkAll} disabled={bulkLinking}>
+              <Link2 className="mr-2 h-4 w-4" />{bulkLinking ? "Linking…" : "Link All Parents"}
+            </Button>
+            <DialogTrigger asChild><Button className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
+          </div>
           <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
             <DialogHeader><DialogTitle>{editing ? "Edit Student" : "Admission Form"}</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-4">
@@ -213,6 +251,15 @@ function StudentsPage() {
                   <TableCell className="hidden sm:table-cell font-mono">{formatCedis(s.fee_balance)}</TableCell>
                   <TableCell className="hidden sm:table-cell"><Badge variant={s.status === "Active" ? "default" : "secondary"}>{s.status}</Badge></TableCell>
                   <TableCell className="text-right whitespace-nowrap">
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      title={s.parent_user_id ? "Parent already linked" : "Link parent account by email"}
+                      disabled={!!s.parent_user_id || linkingId === s.id || !s.parent_email}
+                      onClick={() => handleLinkOne(s)}
+                    >
+                      <Link2 className={`h-4 w-4 ${s.parent_user_id ? "text-emerald-600" : ""}`} />
+                    </Button>
                     <Button size="sm" variant="ghost" onClick={() => openEdit(s)}><Pencil className="h-4 w-4" /></Button>
                     <Button size="sm" variant="ghost" onClick={() => del(s.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                   </TableCell>

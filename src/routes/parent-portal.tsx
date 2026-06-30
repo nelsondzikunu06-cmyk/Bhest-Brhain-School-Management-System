@@ -74,8 +74,13 @@ function ParentPortal() {
       <main className="mx-auto max-w-6xl space-y-6 px-4 py-6">
         {!children.length && (
           <Card>
-            <CardHeader><CardTitle>No child linked yet</CardTitle><CardDescription>Ask the school admin to register you with this email address: <strong>{user.email}</strong></CardDescription></CardHeader>
-            <CardContent><Button variant="outline" onClick={() => refetch()}>Refresh</Button></CardContent>
+            <CardHeader><CardTitle>No child linked yet</CardTitle><CardDescription>Ask the school admin to register your child with this email address: <strong>{user.email}</strong></CardDescription></CardHeader>
+            <CardContent><Button variant="outline" onClick={async () => {
+              const { data: kids } = await supabase.from("students").select("id,parent_email,parent_user_id");
+              const toLink = (kids ?? []).filter((k) => k.parent_email?.toLowerCase() === user.email?.toLowerCase() && !k.parent_user_id);
+              if (toLink.length) await Promise.all(toLink.map((k) => supabase.from("students").update({ parent_user_id: user.id }).eq("id", k.id)));
+              await refetch();
+            }}>Refresh</Button></CardContent>
           </Card>
         )}
 

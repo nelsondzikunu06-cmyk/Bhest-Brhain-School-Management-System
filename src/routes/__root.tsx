@@ -25,11 +25,12 @@ function NotFoundComponent() {
 }
 
 function ErrorComponent({ error }: { error: Error }) {
+  if (typeof console !== "undefined") console.error("Root error boundary:", error);
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
         <h2 className="font-display text-2xl text-foreground">Something went wrong</h2>
-        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <p className="mt-2 text-sm text-muted-foreground">An unexpected error occurred. Please try again.</p>
         <a href="/" className="mt-6 inline-flex rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">Reload</a>
       </div>
     </div>

@@ -77,8 +77,8 @@ function StudentsPage() {
     const { error } = await supabase.storage.from("student-photos").upload(path, photoFile, { upsert: false });
     setUploading(false);
     if (error) { toast.error(error.message); return null; }
-    const { data } = supabase.storage.from("student-photos").getPublicUrl(path);
-    return data.publicUrl;
+    const { data } = await supabase.storage.from("student-photos").createSignedUrl(path, 60 * 60 * 24 * 365);
+    return data?.signedUrl ?? null;
   }
 
   async function save(e: React.FormEvent) {

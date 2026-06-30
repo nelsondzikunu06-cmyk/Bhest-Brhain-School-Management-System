@@ -77,7 +77,11 @@ function RolesPage() {
               <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
             </div>
           ) : error ? (
-            <p className="text-sm text-destructive">{(error as Error).message}</p>
+            <p className="text-sm text-destructive">
+              {(error as Error).message === "Forbidden"
+                ? "You do not have permission to view this list."
+                : "Unable to load users. Please try again."}
+            </p>
           ) : (
             <div className="overflow-x-auto">
               <Table>

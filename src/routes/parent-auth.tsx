@@ -29,11 +29,11 @@ function ParentAuth() {
     } else {
       const { error } = await supabase.auth.signUp({
         email, password,
-        options: { data: { full_name: fullName, role: "parent" }, emailRedirectTo: window.location.origin },
+        options: { data: { full_name: fullName }, emailRedirectTo: window.location.origin },
       });
       setLoading(false);
       if (error) return toast.error(error.message);
-      toast.success("Account created. Make sure your email matches what the school has on file.");
+      toast.success("Account created. An administrator must link you to your child before you can access the portal.");
       nav({ to: "/parent-portal" });
     }
   }

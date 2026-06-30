@@ -22,6 +22,7 @@ type AppRole = "admin" | "parent";
 function RolesPage() {
   const { user } = useAuth();
   const list = useServerFn(listUsersWithRoles);
+  const setRoleFn = useServerFn(adminSetRole);
   const qc = useQueryClient();
   const [search, setSearch] = useState("");
 
@@ -32,13 +33,9 @@ function RolesPage() {
 
   const setRole = useMutation({
     mutationFn: async (vars: { userId: string; role: AppRole; grant: boolean }) => {
-      const { error } = await supabase.rpc("admin_set_role", {
-        _user_id: vars.userId,
-        _role: vars.role,
-        _grant: vars.grant,
-      });
-      if (error) throw error;
+      await setRoleFn({ data: vars });
     },
+
     onSuccess: (_d, vars) => {
       toast.success(`${vars.grant ? "Granted" : "Revoked"} ${vars.role}`);
       qc.invalidateQueries({ queryKey: ["users-with-roles"] });

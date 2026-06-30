@@ -41,6 +41,37 @@ function StudentsPage() {
   const [form, setForm] = useState({ ...empty });
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
+  const [linkingId, setLinkingId] = useState<string | null>(null);
+  const [bulkLinking, setBulkLinking] = useState(false);
+  const linkOne = useServerFn(linkParentToStudent);
+  const linkAll = useServerFn(linkAllParents);
+
+  async function handleLinkOne(s: Student) {
+    if (!s.parent_email) return toast.error("Set a parent email on this student first");
+    setLinkingId(s.id);
+    try {
+      await linkOne({ data: { studentId: s.id } });
+      toast.success(`Linked ${s.full_name} to ${s.parent_email}`);
+      qc.invalidateQueries({ queryKey: ["students"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not link parent");
+    } finally {
+      setLinkingId(null);
+    }
+  }
+
+  async function handleLinkAll() {
+    setBulkLinking(true);
+    try {
+      const res = await linkAll();
+      toast.success(`Linked ${res.linked} student(s)${res.missing.length ? ` · ${res.missing.length} parent account(s) missing` : ""}`);
+      qc.invalidateQueries({ queryKey: ["students"] });
+    } catch (e: any) {
+      toast.error(e?.message ?? "Bulk link failed");
+    } finally {
+      setBulkLinking(false);
+    }
+  }
 
   const { data: students = [] } = useQuery({
     queryKey: ["students"],

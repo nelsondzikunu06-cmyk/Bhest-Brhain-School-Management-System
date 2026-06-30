@@ -160,7 +160,12 @@ function StudentsPage() {
           <p className="text-sm text-muted-foreground">{filtered.length} of {students.length} student(s){editing?.student_code ? ` · editing ${editing.student_code}` : ""}</p>
         </div>
         <Dialog open={open} onOpenChange={(o) => { setOpen(o); if (!o) reset(); }}>
-          <DialogTrigger asChild><Button className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
+          <div className="flex w-full flex-col gap-2 sm:w-auto sm:flex-row">
+            <Button variant="outline" className="w-full sm:w-auto" onClick={handleLinkAll} disabled={bulkLinking}>
+              <Link2 className="mr-2 h-4 w-4" />{bulkLinking ? "Linking…" : "Link All Parents"}
+            </Button>
+            <DialogTrigger asChild><Button className="w-full sm:w-auto bg-primary text-primary-foreground"><Plus className="mr-2 h-4 w-4" />Add Student</Button></DialogTrigger>
+          </div>
           <DialogContent className="max-h-[90vh] max-w-2xl overflow-y-auto">
             <DialogHeader><DialogTitle>{editing ? "Edit Student" : "Admission Form"}</DialogTitle></DialogHeader>
             <form onSubmit={save} className="space-y-4">

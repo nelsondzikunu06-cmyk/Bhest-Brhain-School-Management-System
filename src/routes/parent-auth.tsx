@@ -29,7 +29,7 @@ function ParentAuth() {
     } else {
       const { error } = await supabase.auth.signUp({
         email, password,
-        options: { data: { full_name: fullName, role: "parent" }, emailRedirectTo: window.location.origin },
+        options: { data: { full_name: fullName }, emailRedirectTo: window.location.origin },
       });
       setLoading(false);
       if (error) return toast.error(error.message);

@@ -337,7 +337,6 @@ export type Database = {
         }
         Returns: boolean
       }
-      link_my_children: { Args: never; Returns: number }
     }
     Enums: {
       app_role: "admin" | "parent"

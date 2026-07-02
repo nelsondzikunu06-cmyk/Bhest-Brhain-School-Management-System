@@ -27,19 +27,15 @@ function ParentPortal() {
     else if (role === "admin") nav({ to: "/dashboard" });
   }, [user, role, loading, nav]);
 
-  // Auto-link by email match
+  // Auto-link by email match via SECURITY DEFINER RPC (only touches parent_user_id).
   useEffect(() => {
     if (!user || linkChecked) return;
     (async () => {
-      const { data: kids } = await supabase.from("students").select("id,parent_email,parent_user_id");
-      const toLink = (kids ?? []).filter((k) => k.parent_email?.toLowerCase() === user.email?.toLowerCase() && !k.parent_user_id);
-      if (toLink.length) {
-        // requires admin role to update, so silently ignore failure
-        await Promise.all(toLink.map((k) => supabase.from("students").update({ parent_user_id: user.id }).eq("id", k.id)));
-      }
+      await supabase.rpc("claim_students_by_email");
       setLinkChecked(true);
     })();
   }, [user, linkChecked]);
+
 
   const { data: children = [], refetch } = useQuery({
     queryKey: ["my-children", user?.id, linkChecked],

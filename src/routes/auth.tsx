@@ -10,14 +10,30 @@ import { toast } from "sonner";
 import { GraduationCap } from "lucide-react";
 import bgClassroom from "@/assets/bg-classroom.jpg";
 
-export const Route = createFileRoute("/auth")({ ssr: false, component: AuthPage });
+export const Route = createFileRoute("/auth")({
+  ssr: false,
+  validateSearch: (s: Record<string, unknown>) => ({
+    next: typeof s.next === "string" && s.next.startsWith("/") ? s.next : undefined,
+  }),
+  component: AuthPage,
+});
 
 function AuthPage() {
   const nav = useNavigate();
+  const { next } = Route.useSearch();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
+
+  function goPostAuth() {
+    if (next) {
+      // Same-origin relative path already validated in validateSearch.
+      window.location.href = next;
+      return;
+    }
+    nav({ to: "/dashboard" });
+  }
 
   async function signIn(e: React.FormEvent) {
     e.preventDefault();
@@ -26,20 +42,21 @@ function AuthPage() {
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Welcome back");
-    nav({ to: "/dashboard" });
+    goPostAuth();
   }
 
   async function signUp(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
+    const redirectTarget = next ? `${window.location.origin}${next}` : window.location.origin;
     const { error } = await supabase.auth.signUp({
       email, password,
-      options: { data: { full_name: fullName, role: "admin" }, emailRedirectTo: window.location.origin },
+      options: { data: { full_name: fullName }, emailRedirectTo: redirectTarget },
     });
     setLoading(false);
     if (error) return toast.error(error.message);
     toast.success("Account created. Signing you in…");
-    nav({ to: "/dashboard" });
+    goPostAuth();
   }
 
   return (

@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      ai_insights: {
+        Row: {
+          actions: Json
+          created_at: string
+          generated_by: string | null
+          headline: string
+          id: string
+          metrics: Json
+          risk_level: string
+          risk_score: number
+          scope: string
+          student_id: string | null
+          summary: string
+          updated_at: string
+        }
+        Insert: {
+          actions?: Json
+          created_at?: string
+          generated_by?: string | null
+          headline: string
+          id?: string
+          metrics?: Json
+          risk_level?: string
+          risk_score?: number
+          scope?: string
+          student_id?: string | null
+          summary: string
+          updated_at?: string
+        }
+        Update: {
+          actions?: Json
+          created_at?: string
+          generated_by?: string | null
+          headline?: string
+          id?: string
+          metrics?: Json
+          risk_level?: string
+          risk_score?: number
+          scope?: string
+          student_id?: string | null
+          summary?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "ai_insights_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       announcements: {
         Row: {
           body: string
@@ -69,6 +122,42 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      broadcasts: {
+        Row: {
+          audience: string
+          body: string
+          category: string
+          created_at: string
+          created_by: string | null
+          id: string
+          target_class: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          audience?: string
+          body: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          target_class?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          audience?: string
+          body?: string
+          category?: string
+          created_at?: string
+          created_by?: string | null
+          id?: string
+          target_class?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       fee_structures: {
         Row: {
@@ -132,6 +221,63 @@ export type Database = {
           },
         ]
       }
+      gate_logs: {
+        Row: {
+          created_at: string
+          direction: string
+          id: string
+          note: string | null
+          person_code: string
+          person_type: string
+          scanned_at: string
+          scanned_by: string | null
+          staff_id: string | null
+          student_id: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          direction?: string
+          id?: string
+          note?: string | null
+          person_code: string
+          person_type?: string
+          scanned_at?: string
+          scanned_by?: string | null
+          staff_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          direction?: string
+          id?: string
+          note?: string | null
+          person_code?: string
+          person_type?: string
+          scanned_at?: string
+          scanned_by?: string | null
+          staff_id?: string | null
+          student_id?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "gate_logs_staff_id_fkey"
+            columns: ["staff_id"]
+            isOneToOne: false
+            referencedRelation: "staff"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "gate_logs_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       grades: {
         Row: {
           academic_year: string
@@ -166,6 +312,53 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "grades_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      messages: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          parent_user_id: string | null
+          read_at: string | null
+          sender_name: string | null
+          sender_role: string
+          sender_user_id: string | null
+          student_id: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          parent_user_id?: string | null
+          read_at?: string | null
+          sender_name?: string | null
+          sender_role?: string
+          sender_user_id?: string | null
+          student_id: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          parent_user_id?: string | null
+          read_at?: string | null
+          sender_name?: string | null
+          sender_role?: string
+          sender_user_id?: string | null
+          student_id?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "messages_student_id_fkey"
             columns: ["student_id"]
             isOneToOne: false
             referencedRelation: "students"

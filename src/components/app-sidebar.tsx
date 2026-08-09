@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Users, Wallet, ClipboardCheck, GraduationCap,
   FileText, Megaphone, LogOut, Sun, Moon, School, UserCog, ShieldCheck,
+  Brain, MessageSquare, IdCard, ScanLine,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -22,6 +23,14 @@ const items = [
   { title: "Announcements", url: "/announcements", icon: Megaphone },
   { title: "Roles", url: "/roles", icon: ShieldCheck },
 ];
+
+const smartItems = [
+  { title: "AI Insights", url: "/insights", icon: Brain },
+  { title: "Parent Messages", url: "/messages", icon: MessageSquare },
+  { title: "ID Cards", url: "/id-cards", icon: IdCard },
+  { title: "QR Scanner", url: "/scanner", icon: ScanLine },
+];
+
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -66,7 +75,28 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
+        <SidebarGroup>
+          <SidebarGroupLabel>Smart Tools</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {smartItems.map((it) => {
+                const active = pathname === it.url || pathname.startsWith(it.url + "/");
+                return (
+                  <SidebarMenuItem key={it.url}>
+                    <SidebarMenuButton asChild isActive={active}>
+                      <Link to={it.url} className="flex items-center gap-2">
+                        <it.icon className="h-4 w-4" />
+                        <span>{it.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                );
+              })}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
       </SidebarContent>
+
       <SidebarFooter className="gap-2 border-t border-sidebar-border p-2">
         <Button variant="ghost" size="sm" onClick={toggle} className="justify-start text-sidebar-foreground hover:bg-sidebar-accent">
           {theme === "dark" ? <Sun className="mr-2 h-4 w-4" /> : <Moon className="mr-2 h-4 w-4" />}

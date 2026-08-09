@@ -232,7 +232,7 @@ export const analyzeAtRiskStudents = createServerFn({ method: "POST" })
           headline: String(r.headline ?? "Performance review").slice(0, 120),
           summary: String(r.summary ?? "").slice(0, 1200) || "No summary returned.",
           actions: (Array.isArray(r.actions) ? r.actions : []).slice(0, 5).map((a) => String(a).slice(0, 240)),
-          metrics: m as unknown as Record<string, unknown>,
+          metrics: JSON.parse(JSON.stringify(m)),
           generated_by: context.userId,
         };
       });

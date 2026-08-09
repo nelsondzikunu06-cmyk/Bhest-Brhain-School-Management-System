@@ -17,6 +17,7 @@ import { Route as AdminRouteRouteImport } from './routes/_admin/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminStudentsRouteImport } from './routes/_admin/students'
 import { Route as AdminStaffRouteImport } from './routes/_admin/staff'
+import { Route as AdminScannerRouteImport } from './routes/_admin/scanner'
 import { Route as AdminRolesRouteImport } from './routes/_admin/roles'
 import { Route as AdminReportCardsRouteImport } from './routes/_admin/report-cards'
 import { Route as AdminMessagesRouteImport } from './routes/_admin/messages'
@@ -69,6 +70,11 @@ const AdminStudentsRoute = AdminStudentsRouteImport.update({
 const AdminStaffRoute = AdminStaffRouteImport.update({
   id: '/staff',
   path: '/staff',
+  getParentRoute: () => AdminRouteRoute,
+} as any)
+const AdminScannerRoute = AdminScannerRouteImport.update({
+  id: '/scanner',
+  path: '/scanner',
   getParentRoute: () => AdminRouteRoute,
 } as any)
 const AdminRolesRoute = AdminRolesRouteImport.update({
@@ -163,6 +169,7 @@ export interface FileRoutesByFullPath {
   '/messages': typeof AdminMessagesRoute
   '/report-cards': typeof AdminReportCardsRoute
   '/roles': typeof AdminRolesRoute
+  '/scanner': typeof AdminScannerRoute
   '/staff': typeof AdminStaffRoute
   '/students': typeof AdminStudentsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -186,6 +193,7 @@ export interface FileRoutesByTo {
   '/messages': typeof AdminMessagesRoute
   '/report-cards': typeof AdminReportCardsRoute
   '/roles': typeof AdminRolesRoute
+  '/scanner': typeof AdminScannerRoute
   '/staff': typeof AdminStaffRoute
   '/students': typeof AdminStudentsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -211,6 +219,7 @@ export interface FileRoutesById {
   '/_admin/messages': typeof AdminMessagesRoute
   '/_admin/report-cards': typeof AdminReportCardsRoute
   '/_admin/roles': typeof AdminRolesRoute
+  '/_admin/scanner': typeof AdminScannerRoute
   '/_admin/staff': typeof AdminStaffRoute
   '/_admin/students': typeof AdminStudentsRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
@@ -236,6 +245,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/report-cards'
     | '/roles'
+    | '/scanner'
     | '/staff'
     | '/students'
     | '/.lovable/oauth/consent'
@@ -259,6 +269,7 @@ export interface FileRouteTypes {
     | '/messages'
     | '/report-cards'
     | '/roles'
+    | '/scanner'
     | '/staff'
     | '/students'
     | '/.lovable/oauth/consent'
@@ -283,6 +294,7 @@ export interface FileRouteTypes {
     | '/_admin/messages'
     | '/_admin/report-cards'
     | '/_admin/roles'
+    | '/_admin/scanner'
     | '/_admin/staff'
     | '/_admin/students'
     | '/.lovable/oauth/consent'
@@ -358,6 +370,13 @@ declare module '@tanstack/react-router' {
       path: '/staff'
       fullPath: '/staff'
       preLoaderRoute: typeof AdminStaffRouteImport
+      parentRoute: typeof AdminRouteRoute
+    }
+    '/_admin/scanner': {
+      id: '/_admin/scanner'
+      path: '/scanner'
+      fullPath: '/scanner'
+      preLoaderRoute: typeof AdminScannerRouteImport
       parentRoute: typeof AdminRouteRoute
     }
     '/_admin/roles': {
@@ -472,6 +491,7 @@ interface AdminRouteRouteChildren {
   AdminMessagesRoute: typeof AdminMessagesRoute
   AdminReportCardsRoute: typeof AdminReportCardsRoute
   AdminRolesRoute: typeof AdminRolesRoute
+  AdminScannerRoute: typeof AdminScannerRoute
   AdminStaffRoute: typeof AdminStaffRoute
   AdminStudentsRoute: typeof AdminStudentsRoute
 }
@@ -487,6 +507,7 @@ const AdminRouteRouteChildren: AdminRouteRouteChildren = {
   AdminMessagesRoute: AdminMessagesRoute,
   AdminReportCardsRoute: AdminReportCardsRoute,
   AdminRolesRoute: AdminRolesRoute,
+  AdminScannerRoute: AdminScannerRoute,
   AdminStaffRoute: AdminStaffRoute,
   AdminStudentsRoute: AdminStudentsRoute,
 }

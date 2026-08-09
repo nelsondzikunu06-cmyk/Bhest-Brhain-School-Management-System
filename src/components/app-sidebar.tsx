@@ -2,6 +2,7 @@ import { Link, useRouterState } from "@tanstack/react-router";
 import {
   LayoutDashboard, Users, Wallet, ClipboardCheck, GraduationCap,
   FileText, Megaphone, LogOut, Sun, Moon, School, UserCog, ShieldCheck,
+  Brain, MessageSquare, IdCard, ScanLine,
 } from "lucide-react";
 import {
   Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
@@ -22,6 +23,14 @@ const items = [
   { title: "Announcements", url: "/announcements", icon: Megaphone },
   { title: "Roles", url: "/roles", icon: ShieldCheck },
 ];
+
+const smartItems = [
+  { title: "AI Insights", url: "/insights", icon: Brain },
+  { title: "Parent Messages", url: "/messages", icon: MessageSquare },
+  { title: "ID Cards", url: "/id-cards", icon: IdCard },
+  { title: "QR Scanner", url: "/scanner", icon: ScanLine },
+];
+
 
 export function AppSidebar() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });

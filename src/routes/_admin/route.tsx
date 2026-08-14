@@ -17,8 +17,21 @@ function AdminLayout() {
 
   useEffect(() => {
     if (loading) return;
-    if (!user) nav({ to: "/auth" });
-    else if (role === "parent") nav({ to: "/parent-portal" });
+
+    if (!user) {
+      nav({ to: "/auth", replace: true });
+      return;
+    }
+
+    if (role === "parent") {
+      nav({ to: "/parent-portal", replace: true });
+      return;
+    }
+
+    // Logged-in user without a valid role
+    if (role !== "admin") {
+      nav({ to: "/auth", replace: true });
+    }
   }, [user, role, loading, nav]);
 
   if (loading || !user || role !== "admin") {
@@ -33,17 +46,27 @@ function AdminLayout() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <AppSidebar />
-        <div className="flex flex-1 flex-col relative">
+
+        <div className="relative flex flex-1 flex-col">
           <div
             aria-hidden
             className="pointer-events-none fixed inset-0 -z-10 bg-cover bg-center opacity-[0.08] dark:opacity-[0.12]"
             style={{ backgroundImage: `url(${bgHero})` }}
           />
-          <div aria-hidden className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-br from-background/60 via-background/85 to-background/70" />
+
+          <div
+            aria-hidden
+            className="pointer-events-none fixed inset-0 -z-10 bg-gradient-to-br from-background/60 via-background/85 to-background/70"
+          />
+
           <header className="sticky top-0 z-10 flex h-14 items-center gap-3 border-b bg-background/70 px-4 backdrop-blur-md">
             <SidebarTrigger />
-            <span className="font-display text-lg font-semibold text-foreground">Bhest Brhain Academy</span>
+
+            <span className="font-display text-lg font-semibold text-foreground">
+              Bhest Brhain Academy
+            </span>
           </header>
+
           <main className="flex-1 p-4 md:p-6">
             <Outlet />
           </main>

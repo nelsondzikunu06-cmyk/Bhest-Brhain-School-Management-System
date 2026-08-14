@@ -11,31 +11,94 @@ export function useAuth() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const { data: sub } = supabase.auth.onAuthStateChange((_e, s) => {
-      setSession(s);
-      setUser(s?.user ?? null);
-      if (s?.user) {
-        setTimeout(() => fetchRole(s.user.id), 0);
+    let mounted = true;
+
+    async function loadRole(uid: string) {
+      const { data, error } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", uid);
+
+      if (!mounted) return;
+
+      if (error) {
+        console.error("Failed to load user role:", error);
+        setRole(null);
+        setLoading(false);
+        return;
+      }
+
+      const roles = (data ?? []).map((r) => r.role);
+
+      if (roles.includes("admin")) {
+        setRole("admin");
+      } else if (roles.includes("parent")) {
+        setRole("parent");
+      } else {
+        setRole(null);
+      }
+
+      setLoading(false);
+    }
+
+    async function initialize() {
+      const { data, error } = await supabase.auth.getSession();
+
+      if (!mounted) return;
+
+      if (error) {
+        console.error("Failed to get session:", error);
+        setLoading(false);
+        return;
+      }
+
+      const currentSession = data.session;
+
+      setSession(currentSession);
+      setUser(currentSession?.user ?? null);
+
+      if (currentSession?.user) {
+        await loadRole(currentSession.user.id);
       } else {
         setRole(null);
         setLoading(false);
       }
+    }
+
+    initialize();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, newSession) => {
+      if (!mounted) return;
+
+      setSession(newSession);
+      setUser(newSession?.user ?? null);
+
+      if (!newSession?.user) {
+        setRole(null);
+        setLoading(false);
+        return;
+      }
+
+      // Prevent the old user's role from being displayed
+      // while the new user's role is loading.
+      setRole(null);
+      setLoading(true);
+
+      void loadRole(newSession.user.id);
     });
-    supabase.auth.getSession().then(({ data }) => {
-      setSession(data.session);
-      setUser(data.session?.user ?? null);
-      if (data.session?.user) fetchRole(data.session.user.id);
-      else setLoading(false);
-    });
-    return () => sub.subscription.unsubscribe();
+
+    return () => {
+      mounted = false;
+      subscription.unsubscribe();
+    };
   }, []);
 
-  async function fetchRole(uid: string) {
-    const { data } = await supabase.from("user_roles").select("role").eq("user_id", uid);
-    const roles = (data ?? []).map((r) => r.role);
-    setRole(roles.includes("admin") ? "admin" : roles.includes("parent") ? "parent" : null);
-    setLoading(false);
-  }
-
-  return { session, user, role, loading };
+  return {
+    session,
+    user,
+    role,
+    loading,
+  };
 }

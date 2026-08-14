@@ -82,10 +82,15 @@ function ScannerPage() {
         const { data: existing } = await supabase.from("attendance").select("id").eq("student_id", student.id).eq("date", today).maybeSingle();
         if (!existing) {
           const hour = new Date().getHours();
-          const status = hour >= 8 ? "Late" : "Present";
-          await supabase.from("attendance").insert({ student_id: student.id, date: today, status });
-          note = `Checked in · attendance marked ${status}`;
+          const status = hour >= 8 ? "late" : "present";
+          const { error: attErr } = await supabase
+            .from("attendance")
+            .insert({ student_id: student.id, date: today, status });
+          note = attErr
+            ? "Checked in · attendance could not be marked"
+            : `Checked in · attendance marked ${status}`;
           qc.invalidateQueries({ queryKey: ["attendance"] });
+          qc.invalidateQueries({ queryKey: ["att-records"] });
         } else {
           note = "Checked in · attendance already recorded";
         }

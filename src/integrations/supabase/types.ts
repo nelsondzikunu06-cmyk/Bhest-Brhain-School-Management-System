@@ -278,36 +278,117 @@ export type Database = {
           },
         ]
       }
+      grade_audit: {
+        Row: {
+          academic_year: string | null
+          action: string
+          changed_by: string | null
+          created_at: string
+          grade_id: string | null
+          id: string
+          new_values: Json | null
+          old_values: Json | null
+          student_id: string | null
+          subject: string | null
+          term: string | null
+        }
+        Insert: {
+          academic_year?: string | null
+          action: string
+          changed_by?: string | null
+          created_at?: string
+          grade_id?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          student_id?: string | null
+          subject?: string | null
+          term?: string | null
+        }
+        Update: {
+          academic_year?: string | null
+          action?: string
+          changed_by?: string | null
+          created_at?: string
+          grade_id?: string | null
+          id?: string
+          new_values?: Json | null
+          old_values?: Json | null
+          student_id?: string | null
+          subject?: string | null
+          term?: string | null
+        }
+        Relationships: []
+      }
       grades: {
         Row: {
           academic_year: string
+          class_contribution: number | null
+          class_score: number | null
           created_at: string
+          exam_contribution: number | null
+          exam_score: number
+          group_work: number
           id: string
-          score: number
+          locked: boolean
+          project_work: number
+          score: number | null
+          status: string
           student_id: string
           subject: string
           teacher_comment: string | null
+          teacher_remark: string | null
           term: string
+          test_1: number
+          test_2: number
+          total: number | null
+          updated_at: string
         }
         Insert: {
           academic_year: string
+          class_contribution?: number | null
+          class_score?: number | null
           created_at?: string
+          exam_contribution?: number | null
+          exam_score?: number
+          group_work?: number
           id?: string
-          score: number
+          locked?: boolean
+          project_work?: number
+          score?: number | null
+          status?: string
           student_id: string
           subject: string
           teacher_comment?: string | null
+          teacher_remark?: string | null
           term: string
+          test_1?: number
+          test_2?: number
+          total?: number | null
+          updated_at?: string
         }
         Update: {
           academic_year?: string
+          class_contribution?: number | null
+          class_score?: number | null
           created_at?: string
+          exam_contribution?: number | null
+          exam_score?: number
+          group_work?: number
           id?: string
-          score?: number
+          locked?: boolean
+          project_work?: number
+          score?: number | null
+          status?: string
           student_id?: string
           subject?: string
           teacher_comment?: string | null
+          teacher_remark?: string | null
           term?: string
+          test_1?: number
+          test_2?: number
+          total?: number | null
+          updated_at?: string
         }
         Relationships: [
           {
@@ -318,6 +399,36 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      grading_scale: {
+        Row: {
+          created_at: string
+          grade: string
+          id: string
+          max_score: number
+          min_score: number
+          remark: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          grade: string
+          id?: string
+          max_score: number
+          min_score: number
+          remark: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          grade?: string
+          id?: string
+          max_score?: number
+          min_score?: number
+          remark?: string
+          updated_at?: string
+        }
+        Relationships: []
       }
       messages: {
         Row: {
@@ -383,6 +494,83 @@ export type Database = {
           id?: string
         }
         Relationships: []
+      }
+      report_cards: {
+        Row: {
+          academic_year: string
+          average: number | null
+          class_size: number | null
+          class_teacher_remark: string | null
+          created_at: string
+          days_absent: number
+          days_late: number
+          days_present: number
+          days_total: number
+          head_teacher_remark: string | null
+          id: string
+          overall_position: number | null
+          promotion_status: string | null
+          published_at: string | null
+          published_by: string | null
+          snapshot: Json | null
+          status: string
+          student_id: string
+          term: string
+          updated_at: string
+        }
+        Insert: {
+          academic_year: string
+          average?: number | null
+          class_size?: number | null
+          class_teacher_remark?: string | null
+          created_at?: string
+          days_absent?: number
+          days_late?: number
+          days_present?: number
+          days_total?: number
+          head_teacher_remark?: string | null
+          id?: string
+          overall_position?: number | null
+          promotion_status?: string | null
+          published_at?: string | null
+          published_by?: string | null
+          snapshot?: Json | null
+          status?: string
+          student_id: string
+          term: string
+          updated_at?: string
+        }
+        Update: {
+          academic_year?: string
+          average?: number | null
+          class_size?: number | null
+          class_teacher_remark?: string | null
+          created_at?: string
+          days_absent?: number
+          days_late?: number
+          days_present?: number
+          days_total?: number
+          head_teacher_remark?: string | null
+          id?: string
+          overall_position?: number | null
+          promotion_status?: string | null
+          published_at?: string | null
+          published_by?: string | null
+          snapshot?: Json | null
+          status?: string
+          student_id?: string
+          term?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "report_cards_student_id_fkey"
+            columns: ["student_id"]
+            isOneToOne: false
+            referencedRelation: "students"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       staff: {
         Row: {
